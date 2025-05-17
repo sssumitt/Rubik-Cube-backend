@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { Info } from 'lucide-react';
+import { useState } from "react";
+import { Info } from "lucide-react";
 import Cube from "./Cube/cubie.jsx";
-
-
 import CubeStateEditor from "./Cube/CubeStateEditor.jsx";
 
 function App() {
@@ -13,25 +11,29 @@ function App() {
     <div
       className="info-modal"
       style={{
-        position: 'fixed',
-        top: '15%',
-        left: '50%',
-        transform: 'translate(-50%, -15%)',
-        background: 'rgba(7, 10, 19, 0.9)',
-        color: 'var(--clr-light)',
-        padding: '1.5rem 2rem',
-        borderRadius: '0.5rem',
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.6)',
+        position: "fixed",
+        top: "15%",
+        left: "50%",
+        transform: "translate(-50%, -15%)",
+        background: "rgba(7, 10, 19, 0.9)",
+        color: "var(--clr-light)",
+        padding: "1.5rem 2rem",
+        borderRadius: "0.5rem",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.6)",
         zIndex: 10001,
-        maxWidth: '90%',
-        width: '400px',
+        maxWidth: "90%",
+        width: "400px",
       }}
     >
-      <h3 style={{ marginBottom: '1rem' }}>How to use the cube</h3>
-      <ul style={{ paddingLeft: '1.2rem', marginBottom: '1rem' }}>
-        <li>Choose a layer by pressing a <strong>number</strong>.</li>
-        <li>Rotate by pressing a face letter <strong>(U/R/F/D/L/B)</strong>, with <strong>Shift</strong> for counter-clockwise.</li>
-
+      <h3 style={{ marginBottom: "1rem" }}>How to use the cube</h3>
+      <ul style={{ paddingLeft: "1.2rem", marginBottom: "1rem" }}>
+        <li>
+          Choose a layer by pressing a <strong>number</strong>.
+        </li>
+        <li>
+          Rotate by pressing a face letter <strong>(U/R/F/D/L/B)</strong>, with{" "}
+          <strong>Shift</strong> for counter-clockwise.
+        </li>
       </ul>
       <button className="btn" onClick={() => setShowInfo(false)}>
         Close
@@ -43,12 +45,12 @@ function App() {
     <div
       className="modal-backdrop"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
-        background: 'rgba(0, 0, 0, 0.4)',
+        width: "100vw",
+        height: "100vh",
+        background: "rgba(0, 0, 0, 0.4)",
         zIndex: 10000,
       }}
       onClick={() => setShowInfo(false)}
@@ -57,22 +59,25 @@ function App() {
 
   return (
     <>
-      <header className="hero container header-wrapper" style={{ position: 'relative' }}>
+      <header
+        className="hero container header-wrapper"
+        style={{ position: "relative" }}
+      >
         <button
           className="info-button"
-          onClick={() => setShowInfo(prev => !prev)}
+          onClick={() => setShowInfo((prev) => !prev)}
           aria-label="Show instructions"
           style={{
-            position: 'absolute',
-            top: '1rem',
-            left: '1rem',
-            background: 'rgba(255, 255, 255, 0.1)',
-            border: 'none',
-            padding: '0.5rem',
-            borderRadius: '0.25rem',
+            position: "absolute",
+            top: "1rem",
+            left: "1rem",
+            background: "rgba(255, 255, 255, 0.1)",
+            border: "none",
+            padding: "0.5rem",
+            borderRadius: "0.25rem",
             zIndex: 10002,
-            color: 'var(--clr-light)',
-            cursor: 'pointer',
+            color: "var(--clr-light)",
+            cursor: "pointer",
           }}
         >
           <Info size={24} />
@@ -90,20 +95,42 @@ function App() {
       <main className="hero container">
         <Cube key={cubeSize} cubeSize={cubeSize} />
 
-        <div className="size-input-container">
-          <label htmlFor="cube-size" className='hero__subtitle'>
+        <div className="size-input-container" style={{ marginTop: "1rem" }}>
+          <label
+            htmlFor="cube-size"
+            className="hero__subtitle"
+            style={{ marginRight: "0.5rem" }}
+          >
             Cube Size:
           </label>
-          <input
-            id="cube-size"
-            type="number"
-            min="2"
-            value={cubeSize}
-            onChange={e => {
-              const v = parseInt(e.target.value, 10);
-              if (!isNaN(v) && v >= 2) setCubeSize(v);
-            }}
-          />
+          <div
+            className="size-controls"
+            style={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <button
+              onClick={() => setCubeSize((c) => Math.max(2, c - 1))}
+              style={{ padding: "0.25rem 0.5rem", fontSize: "1rem" }}
+            >
+              −
+            </button>
+            <input
+              id="cube-size"
+              type="number"
+              min="2"
+              value={cubeSize}
+              onChange={(e) => {
+                const v = parseInt(e.target.value, 10);
+                if (!isNaN(v) && v >= 2) setCubeSize(v);
+              }}
+              style={{ width: "3rem", textAlign: "center", margin: "0 0.5rem" }}
+            />
+            <button
+              onClick={() => setCubeSize((c) => c + 1)}
+              style={{ padding: "0.25rem 0.5rem", fontSize: "1rem" }}
+            >
+              +
+            </button>
+          </div>
         </div>
       </main>
 
