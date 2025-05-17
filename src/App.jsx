@@ -29,7 +29,7 @@ function App() {
     >
       <h3 style={{ marginBottom: '1rem' }}>How to use the cube</h3>
       <ul style={{ paddingLeft: '1.2rem', marginBottom: '1rem' }}>
-        <li>Choose a layer by pressing a <strong>number</strong> (1 = top, 2 = middle, etc.).</li>
+        <li>Choose a layer by pressing a <strong>number</strong>.</li>
         <li>Rotate by pressing a face letter <strong>(U/R/F/D/L/B)</strong>, with <strong>Shift</strong> for counter-clockwise.</li>
 
       </ul>
