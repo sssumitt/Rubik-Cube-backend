@@ -51,5 +51,7 @@ Cube CoordCube::getCube() const{
     cube.setURtoUL(URtoUL);
     cube.setUBtoDF(UBtoDF);
     cube.setURtoDF(URtoDF);
+
     return cube;
+
 }

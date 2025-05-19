@@ -1,29 +1,39 @@
+# Detect OS
+ifeq ($(OS),Windows_NT)
+  EXT         := .exe
+  RM          := del /Q
+  INCLUDES    := -I$(INCLUDE_DIR) -IC:/vcpkg/installed/x64-windows/include
+  LDFLAGS_OS  := -lws2_32 -lmswsock -L"C:/vcpkg/installed/x64-windows/lib"
+else
+  UNAME_S     := $(shell uname -s)
+  EXT         :=            # no .exe on Linux/macOS
+  RM          := rm -f
+  INCLUDES    := -I$(INCLUDE_DIR)
+  LDFLAGS_OS  :=             # add Linux-specific libs here if needed
+endif
+
 # Compiler and flags
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I$(INCLUDE_DIR) -IC:/vcpkg/installed/x64-windows/include
+CXX       := g++
+CXXFLAGS  := -std=c++17 -Wall $(INCLUDES)
 
-# Linker flags (include winsock)
-LDFLAGS = -lws2_32 -lmswsock -L"C:/vcpkg/installed/x64-windows/lib"
+# Source layout
+SRC_DIR   := src
+INCLUDE_DIR := include
+SRCS      := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS      := $(SRCS:$(SRC_DIR)/%.cpp=$(SRC_DIR)/%.o)
 
-# Source and include directories
-SRC_DIR = src
-INCLUDE_DIR = include
-
-# All source files (make sure to include both CubeBackend.cpp and CubeSolver.cpp)
-SRCS = $(SRC_DIR)/CubeBackend.cpp $(SRC_DIR)/CubeSolver.cpp $(SRC_DIR)/Cube.cpp $(SRC_DIR)/CoordCube.cpp $(SRC_DIR)/FaceCube.cpp $(SRC_DIR)/MoveTable.cpp $(SRC_DIR)/pruneTable.cpp $(SRC_DIR)/Search.cpp
-OBJS = $(SRCS:.cpp=.o)
-TARGET = cube_backend.exe
+# Final target
+TARGET    := cube_backend$(EXT)
 
 .PHONY: all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS_OS)
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	@if exist "$(SRC_DIR)\*.o" del /Q "$(SRC_DIR)\*.o"
-	@if exist "$(TARGET)" del /Q "$(TARGET)"
+	$(RM) $(OBJS) $(TARGET)

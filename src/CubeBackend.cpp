@@ -34,9 +34,6 @@ int main() {
         // Solve the cube
         std::string solution = solveCube(cubeState);
 
-        // Optionally, check if the solution indicates an error.
-        // For example, if solveCube returns an empty string or a specific error message,
-        // you could handle it accordingly.
 
         res.body = solution;
         return res;
