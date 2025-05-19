@@ -1,9 +1,1 @@
-﻿  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/CubeBackend.cpp -o src/CubeBackend.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/CubeSolver.cpp -o src/CubeSolver.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/Cube.cpp -o src/Cube.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/CoordCube.cpp -o src/CoordCube.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/FaceCube.cpp -o src/FaceCube.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/MoveTable.cpp -o src/MoveTable.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/pruneTable.cpp -o src/pruneTable.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -c src/Search.cpp -o src/Search.o
-  g++ -std=c++17 -Wall -Iinclude -IC:/vcpkg/installed/x64-windows/include -o cube_backend.exe src/CubeBackend.o src/CubeSolver.o src/Cube.o src/CoordCube.o src/FaceCube.o src/MoveTable.o src/pruneTable.o src/Search.o -lws2_32 -lmswsock -L"C:/vcpkg/installed/x64-windows/lib"
+﻿  make: Nothing to be done for 'all'.
