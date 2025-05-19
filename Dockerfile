@@ -1,19 +1,15 @@
 FROM ubuntu:22.04
 
-# Install build tools + git + python3
 RUN apt update \
- && apt install -y g++ make cmake curl libboost-all-dev git python3
+ && apt install -y g++ make cmake curl libboost-all-dev
 
 WORKDIR /app
-
-# Copy your code in
 COPY . .
 
-# Clone Crow and use its merge script to produce crow.h
-RUN git clone --depth 1 https://github.com/CrowCpp/Crow.git /tmp/crow \
- && python3 /tmp/crow/scripts/merge_all.py /tmp/crow/include include/crow.h
+# Download crow_all.h (rename to crow.h)
+RUN curl -fsSL "https://sourceforge.net/projects/crow-framework.mirror/files/v1.0%2B4/crow_all.h/download" \
+     -o include/crow.h
 
-# Now build
 RUN make
 
 EXPOSE 18080
