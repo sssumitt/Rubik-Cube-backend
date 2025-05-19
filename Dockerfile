@@ -1,21 +1,20 @@
 FROM ubuntu:22.04
 
-# Install build tools + git for grabbing Crow
-RUN apt update && \
-    apt install -y g++ make cmake curl libboost-all-dev git
+# Install build tools + git + python3
+RUN apt update \
+ && apt install -y g++ make cmake curl libboost-all-dev git python3
 
-# Pull Crow single-header and install it under include/
 WORKDIR /app
-COPY . . 
 
-# Fetch Crow’s amalgamated header and rename to crow.h
-RUN git clone --depth 1 https://github.com/CrowCpp/Crow.git /tmp/crow && \
-    cp /tmp/crow/include/crow_all.h include/crow.h
+# Copy your code in
+COPY . .
 
-# Build the app
+# Clone Crow and use its merge script to produce crow.h
+RUN git clone --depth 1 https://github.com/CrowCpp/Crow.git /tmp/crow \
+ && python3 /tmp/crow/scripts/merge_all.py /tmp/crow/include include/crow.h
+
+# Now build
 RUN make
 
-# Expose Crow’s port
 EXPOSE 18080
-
 CMD ["./cube_backend"]
