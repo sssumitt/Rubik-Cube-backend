@@ -1,5 +1,6 @@
 #include "FaceCube.h"
 #include <iostream>
+#include <tuple>
 // Edge mappings
 const FaceCube::EdgeMapping FaceCube::edgeMappings[12] = {
     {U, 5, R, 1},  // UR  0
