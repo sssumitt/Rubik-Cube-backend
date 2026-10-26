@@ -51,10 +51,3 @@ jobs:
           docker tag $IMAGE:${{ github.sha }} $IMAGE:latest
           docker push $IMAGE:${{ github.sha }}
           docker push $IMAGE:latest
-
-      - name: Trigger Render deploy
-        if: github.event_name == 'push'
-        env:
-          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: |
-          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK"; else echo "No deploy hook set, skipping"; fi
