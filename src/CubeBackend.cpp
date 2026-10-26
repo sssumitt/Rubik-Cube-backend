@@ -2,9 +2,13 @@
 #include "CubeSolver.h"
 #include <string>
 #include <iostream>
+#include <cstdlib>
 
 int main() {
     crow::SimpleApp app;
+
+    // Health check for load balancers / Kubernetes probes
+    CROW_ROUTE(app, "/health")([]() { return "ok"; });
 
     CROW_ROUTE(app, "/solve")
         .methods("POST"_method, "OPTIONS"_method)
@@ -39,7 +43,11 @@ int main() {
         return res;
             });
 
-    std::cout << "CubeBackend is running on port 5050" << std::endl;
-    app.port(5050).multithreaded().run();
+    // Read port from the PORT env var (used by Render, Cloud Run, k8s); default 5050
+    const char* portEnv = std::getenv("PORT");
+    int port = portEnv ? std::atoi(portEnv) : 5050;
+
+    std::cout << "CubeBackend is running on port " << port << std::endl;
+    app.port(port).multithreaded().run();
     return 0;
 }

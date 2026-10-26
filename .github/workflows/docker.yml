@@ -1,0 +1,55 @@
+name: Build, test and publish image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/sssumitt/rubik-cube-backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t $IMAGE:${{ github.sha }} .
+
+      - name: Smoke test (container starts and /health responds)
+        run: |
+          docker run -d --name solver -p 5050:5050 $IMAGE:${{ github.sha }}
+          for i in $(seq 1 15); do
+            curl -fs http://localhost:5050/health && exit 0
+            sleep 2
+          done
+          docker logs solver
+          exit 1
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        if: github.event_name == 'push'
+        run: |
+          docker tag $IMAGE:${{ github.sha }} $IMAGE:latest
+          docker push $IMAGE:${{ github.sha }}
+          docker push $IMAGE:latest
+
+      - name: Trigger Render deploy
+        if: github.event_name == 'push'
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK"; else echo "No deploy hook set, skipping"; fi
